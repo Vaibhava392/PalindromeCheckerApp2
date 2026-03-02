@@ -1,26 +1,23 @@
-public class RecursivePalindrome {
+public class NormalizedPalindrome {
     public static void main(String[] args) {
-        String input = "RADAR";
+        String input = "A man, a plan, a canal: Panama";
 
-        // Initial call: passing the string, start index 0, and end index
-        boolean result = isPalindrome(input, 0, input.length() - 1);
+        // 1. Normalize the string
+        // [^a-zA-Z0-9] means "anything NOT a letter or number"
+        String cleanInput = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
 
-        System.out.println("Input: " + input);
+        System.out.println("Original: " + input);
+        System.out.println("Normalized: " + cleanInput);
+
+        // 2. Apply comparison logic (UC9 Recursion style)
+        boolean result = isPalindrome(cleanInput, 0, cleanInput.length() - 1);
+
         System.out.println("Is Palindrome? " + result);
     }
 
     public static boolean isPalindrome(String s, int start, int end) {
-        // Base Condition 1: If pointers meet or cross, we are done
-        if (start >= end) {
-            return true;
-        }
-
-        // Base Condition 2: If characters don't match, it's not a palindrome
-        if (s.charAt(start) != s.charAt(end)) {
-            return false;
-        }
-
-        // Recursive Call: Move inward by 1 from both sides
+        if (start >= end) return true;
+        if (s.charAt(start) != s.charAt(end)) return false;
         return isPalindrome(s, start + 1, end - 1);
     }
 }
