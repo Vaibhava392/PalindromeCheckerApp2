@@ -1,35 +1,35 @@
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
-public class DataStructureDemo {
+public class PalindromeDeque {
     public static void main(String[] args) {
-        String input = "BOLT";
+        String input = "RADAR";
+        Deque<Character> deque = new ArrayDeque<>();
 
-        // Initialize structures
-        Queue<Character> queue = new LinkedList<>(); // Queue is an interface in Java
-        Stack<Character> stack = new Stack<>();
-
-        // 1. Loading the data
-        System.out.println("Inputting characters: " + input);
+        // Step 1: Insert characters into Deque
         for (char c : input.toCharArray()) {
-            queue.add(c);  // Enqueue
-            stack.push(c); // Push
+            deque.addLast(c);
         }
 
-        // 2. Comparison of Dequeue vs Pop
-        System.out.println("\n--- Retrieval Comparison ---");
-        System.out.printf("%-15s | %-15s%n", "Queue (FIFO)", "Stack (LIFO)");
-        System.out.println("---------------------------------------");
+        boolean isPalindrome = true;
 
-        while (!queue.isEmpty()) {
-            char qChar = queue.poll(); // Dequeue: removes from front
-            char sChar = stack.pop();  // Pop: removes from top
+        // Step 2 & 3: Remove first & last and compare
+        // We continue as long as there's a pair to compare (size > 1)
+        while (deque.size() > 1) {
+            char first = deque.removeFirst();
+            char last = deque.removeLast();
 
-            System.out.printf("%-15s | %-15s%n", qChar, sChar);
+            if (first != last) {
+                isPalindrome = false;
+                break;
+            }
         }
+
+        System.out.println("Input: " + input);
+        System.out.println("Is Palindrome? " + isPalindrome);
     }
 }
+
 
 
 
