@@ -1,66 +1,30 @@
-class Node {
-    char data;
-    Node next;
-    Node(char data) { this.data = data; }
-}
-
-public class LinkedListPalindrome {
+public class RecursivePalindrome {
     public static void main(String[] args) {
         String input = "RADAR";
-        Node head = convertToLinkedList(input);
 
-        if (isPalindrome(head)) {
-            System.out.println(input + " is a Palindrome.");
-        } else {
-            System.out.println(input + " is NOT a Palindrome.");
-        }
+        // Initial call: passing the string, start index 0, and end index
+        boolean result = isPalindrome(input, 0, input.length() - 1);
+
+        System.out.println("Input: " + input);
+        System.out.println("Is Palindrome? " + result);
     }
 
-    public static boolean isPalindrome(Node head) {
-        if (head == null || head.next == null) return true;
-
-        // 1. Find Middle using Slow/Fast pointers
-        Node slow = head, fast = head;
-        while (fast != null && fast.next != null) {
-            slow = slow.next;
-            fast = fast.next.next;
+    public static boolean isPalindrome(String s, int start, int end) {
+        // Base Condition 1: If pointers meet or cross, we are done
+        if (start >= end) {
+            return true;
         }
 
-        // 2. Reverse the Second Half in-place
-        Node secondHalf = reverse(slow);
-        Node firstHalf = head;
-
-        // 3. Compare the two halves
-        Node temp = secondHalf; // Keep reference to reverse back if needed
-        while (secondHalf != null) {
-            if (firstHalf.data != secondHalf.data) return false;
-            firstHalf = firstHalf.next;
-            secondHalf = secondHalf.next;
+        // Base Condition 2: If characters don't match, it's not a palindrome
+        if (s.charAt(start) != s.charAt(end)) {
+            return false;
         }
-        return true;
-    }
 
-    private static Node reverse(Node head) {
-        Node prev = null, current = head, next = null;
-        while (current != null) {
-            next = current.next;
-            current.next = prev;
-            prev = current;
-            current = next;
-        }
-        return prev;
-    }
-
-    private static Node convertToLinkedList(String s) {
-        Node dummy = new Node(' ');
-        Node current = dummy;
-        for (char c : s.toCharArray()) {
-            current.next = new Node(c);
-            current = current.next;
-        }
-        return dummy.next;
+        // Recursive Call: Move inward by 1 from both sides
+        return isPalindrome(s, start + 1, end - 1);
     }
 }
+
 
 
 
