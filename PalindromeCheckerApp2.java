@@ -71,6 +71,7 @@ class PalindromeService {
 // 5. The Main Application
 public class PalindromeCheckerApp2 {
     public static void main(String[] args) {
+        System.out.println("Welcome to Palindrome Checker App Management System");
         String testInput = "Race Car";
 
         // Initialize with Stack Strategy
