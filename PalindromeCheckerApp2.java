@@ -1,34 +1,67 @@
-import java.util.ArrayDeque;
-import java.util.Deque;
+class Node {
+    char data;
+    Node next;
+    Node(char data) { this.data = data; }
+}
 
-public class PalindromeDeque {
+public class LinkedListPalindrome {
     public static void main(String[] args) {
         String input = "RADAR";
-        Deque<Character> deque = new ArrayDeque<>();
+        Node head = convertToLinkedList(input);
 
-        // Step 1: Insert characters into Deque
-        for (char c : input.toCharArray()) {
-            deque.addLast(c);
+        if (isPalindrome(head)) {
+            System.out.println(input + " is a Palindrome.");
+        } else {
+            System.out.println(input + " is NOT a Palindrome.");
+        }
+    }
+
+    public static boolean isPalindrome(Node head) {
+        if (head == null || head.next == null) return true;
+
+        // 1. Find Middle using Slow/Fast pointers
+        Node slow = head, fast = head;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
         }
 
-        boolean isPalindrome = true;
+        // 2. Reverse the Second Half in-place
+        Node secondHalf = reverse(slow);
+        Node firstHalf = head;
 
-        // Step 2 & 3: Remove first & last and compare
-        // We continue as long as there's a pair to compare (size > 1)
-        while (deque.size() > 1) {
-            char first = deque.removeFirst();
-            char last = deque.removeLast();
-
-            if (first != last) {
-                isPalindrome = false;
-                break;
-            }
+        // 3. Compare the two halves
+        Node temp = secondHalf; // Keep reference to reverse back if needed
+        while (secondHalf != null) {
+            if (firstHalf.data != secondHalf.data) return false;
+            firstHalf = firstHalf.next;
+            secondHalf = secondHalf.next;
         }
+        return true;
+    }
 
-        System.out.println("Input: " + input);
-        System.out.println("Is Palindrome? " + isPalindrome);
+    private static Node reverse(Node head) {
+        Node prev = null, current = head, next = null;
+        while (current != null) {
+            next = current.next;
+            current.next = prev;
+            prev = current;
+            current = next;
+        }
+        return prev;
+    }
+
+    private static Node convertToLinkedList(String s) {
+        Node dummy = new Node(' ');
+        Node current = dummy;
+        for (char c : s.toCharArray()) {
+            current.next = new Node(c);
+            current = current.next;
+        }
+        return dummy.next;
     }
 }
+
 
 
 
