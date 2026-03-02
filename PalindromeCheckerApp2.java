@@ -1,26 +1,35 @@
-public class NormalizedPalindrome {
-    public static void main(String[] args) {
-        String input = "A man, a plan, a canal: Panama";
+class PalindromeService {
+    public boolean checkPalindrome(String input) {
+        if (input == null) return false;
 
-        // 1. Normalize the string
-        // [^a-zA-Z0-9] means "anything NOT a letter or number"
+        // Clean the input: remove non-alphanumeric and lowercase
         String cleanInput = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
 
-        System.out.println("Original: " + input);
-        System.out.println("Normalized: " + cleanInput);
+        int left = 0;
+        int right = cleanInput.length() - 1;
 
-        // 2. Apply comparison logic (UC9 Recursion style)
-        boolean result = isPalindrome(cleanInput, 0, cleanInput.length() - 1);
-
-        System.out.println("Is Palindrome? " + result);
-    }
-
-    public static boolean isPalindrome(String s, int start, int end) {
-        if (start >= end) return true;
-        if (s.charAt(start) != s.charAt(end)) return false;
-        return isPalindrome(s, start + 1, end - 1);
+        while (left < right) {
+            if (cleanInput.charAt(left) != cleanInput.charAt(right)) {
+                return false;
+            }
+            left++;
+            right--;
+        }
+        return true;
     }
 }
+
+public class PalindromeCheckerApp {
+    public static void main(String[] args) {
+        PalindromeService service = new PalindromeService();
+
+        String testWord = "Racecar";
+        boolean result = service.checkPalindrome(testWord);
+
+        System.out.println("Is '" + testWord + "' a palindrome? " + result);
+    }
+}
+
 
 
 
