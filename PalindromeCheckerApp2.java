@@ -1,85 +1,42 @@
-import java.util.*;
+import java.util.Scanner;
 
-// 1. The Strategy Interface
-interface PalindromeStrategy {
-    boolean isValid(String input);
-}
+public class PalindromeChecker {
+    private static final String APP_NAME = "Palindrome Sentinel";
+    private static final String VERSION = "1.1.0";
 
-// 2. Concrete Strategy: Stack (LIFO approach)
-class StackStrategy implements PalindromeStrategy {
-    @Override
-    public boolean isValid(String input) {
-        if (input == null) return false;
-        
-        String clean = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
-        Stack<Character> stack = new Stack<>();
-
-        for (char c : clean.toCharArray()) {
-            stack.push(c);
-        }
-
-        StringBuilder reversed = new StringBuilder();
-        while (!stack.isEmpty()) {
-            reversed.append(stack.pop());
-        }
-
-        return clean.equals(reversed.toString());
-    }
-}
-
-// 3. Concrete Strategy: Deque (Double-Ended Queue approach)
-class DequeStrategy implements PalindromeStrategy {
-    @Override
-    public boolean isValid(String input) {
-        if (input == null || input.isEmpty()) return true;
-
-        String clean = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
-        Deque<Character> deque = new LinkedList<>();
-
-        for (char c : clean.toCharArray()) {
-            deque.addLast(c);
-        }
-
-        while (deque.size() > 1) {
-            if (!deque.removeFirst().equals(deque.removeLast())) {
-                return false;
-            }
-        }
-        return true;
-    }
-}
-
-// 4. The Context Class (The Service)
-class PalindromeService {
-    private PalindromeStrategy strategy;
-
-    // Constructor Injection
-    public PalindromeService(PalindromeStrategy strategy) {
-        this.strategy = strategy;
-    }
-
-    // Runtime Strategy Injection (Setter)
-    public void setStrategy(PalindromeStrategy strategy) {
-        this.strategy = strategy;
-    }
-
-    public boolean check(String input) {
-        return strategy.isValid(input);
-    }
-}
-
-// 5. The Main Application
-public class PalindromeCheckerApp2 {
     public static void main(String[] args) {
-        System.out.println("Welcome to Palindrome Checker App Management System");
-        String testInput = "Race Car";
+        displayHeader();
 
-        // Initialize with Stack Strategy
-        PalindromeService service = new PalindromeService(new StackStrategy());
-        System.out.println("[Stack Strategy] Is '" + testInput + "' a palindrome? " + service.check(testInput));
+        Scanner scanner = new Scanner(System.in);
 
-        // Swap to Deque Strategy at runtime
-        service.setStrategy(new DequeStrategy());
-        System.out.println("[Deque Strategy] Is '" + testInput + "' a palindrome? " + service.check(testInput));
+        System.out.print("Enter a word or phrase to check: ");
+        String input = scanner.nextLine();
+
+        if (isPalindrome(input)) {
+            System.out.println("\nSUCCESS: \"" + input + "\" is a palindrome.");
+        } else {
+            System.out.println("\nFAILURE: \"" + input + "\" is NOT a palindrome.");
+        }
+
+        System.out.println("\nThank you for using " + APP_NAME + ". Goodbye!");
+        scanner.close();
+    }
+
+    private static void displayHeader() {
+        System.out.println("************************************");
+        System.out.println("   " + APP_NAME.toUpperCase());
+        System.out.println("   Version: " + VERSION);
+        System.out.println("************************************");
+    }
+
+    private static boolean isPalindrome(String text) {
+        String clean = text.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+
+        if (clean.isEmpty()) return false;
+
+        String reversed = new StringBuilder(clean).reverse().toString();
+
+        return clean.equals(reversed);
     }
 }
+
