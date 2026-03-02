@@ -1,29 +1,36 @@
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Stack;
 
-public class StackPalindrome {
+public class DataStructureDemo {
     public static void main(String[] args) {
-        String input = "madam";
+        String input = "BOLT";
+
+        // Initialize structures
+        Queue<Character> queue = new LinkedList<>(); // Queue is an interface in Java
         Stack<Character> stack = new Stack<>();
 
-        // Step 1: Push all characters onto the stack
-        for (int i = 0; i < input.length(); i++) {
-            stack.push(input.charAt(i));
+        // 1. Loading the data
+        System.out.println("Inputting characters: " + input);
+        for (char c : input.toCharArray()) {
+            queue.add(c);  // Enqueue
+            stack.push(c); // Push
         }
 
-        boolean isPalindrome = true;
+        // 2. Comparison of Dequeue vs Pop
+        System.out.println("\n--- Retrieval Comparison ---");
+        System.out.printf("%-15s | %-15s%n", "Queue (FIFO)", "Stack (LIFO)");
+        System.out.println("---------------------------------------");
 
-        // Step 2: Pop and compare with the original string
-        for (int i = 0; i < input.length(); i++) {
-            char poppedChar = stack.pop(); // Returns the last pushed character
-            if (input.charAt(i) != poppedChar) {
-                isPalindrome = false;
-                break;
-            }
+        while (!queue.isEmpty()) {
+            char qChar = queue.poll(); // Dequeue: removes from front
+            char sChar = stack.pop();  // Pop: removes from top
+
+            System.out.printf("%-15s | %-15s%n", qChar, sChar);
         }
-
-        System.out.println("Is '" + input + "' a palindrome? " + isPalindrome);
     }
 }
+
 
 
 
