@@ -1,19 +1,25 @@
-public class PalindromeCheck {
+public class TwoPointerPalindrome {
     public static void main(String[] args) {
-        String original = "level";
-        String reversed = "";
+        String input = "racecar";
 
-        // Loop: Iterating backwards from length - 1 down to 0
-        for (int i = original.length() - 1; i >= 0; i--) {
-            reversed += original.charAt(i); // String concatenation
+        // Convert String to character array
+        char[] charArray = input.toCharArray();
+
+        boolean isPalindrome = true;
+        int start = 0;
+        int end = charArray.length - 1;
+
+        // Two-pointer loop
+        while (start < end) {
+            if (charArray[start] != charArray[end]) {
+                isPalindrome = false;
+                break; // Optimization: Exit early if a mismatch is found
+            }
+            start++;
+            end--;
         }
 
-        // Comparison: Checking content, not memory address
-        if (original.equals(reversed)) {
-            System.out.println(original + " is a palindrome.");
-        } else {
-            System.out.println(original + " is not a palindrome.");
-        }
+        System.out.println("Is palindrome: " + isPalindrome);
     }
 }
 
